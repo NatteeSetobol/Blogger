@@ -1,5 +1,7 @@
 package com.nomication.Services;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +15,10 @@ public class BloggerService {
 	
 	public Blogger FindBlogger(String username)
 	{
-		Iterable<Blogger> bloggers = bloggerRepo.findAll();
-		
-		for (Blogger blogger: bloggers  )
+		ArrayList<Blogger> bloggers = bloggerRepo.findUserByUsername();
+		for (int i=0;i < bloggers.size(); i++  )
 		{
+			Blogger blogger = bloggers.get(i);
 			if (username.equals(blogger.getUsername()))
 			{
 				return blogger;

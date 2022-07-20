@@ -15,7 +15,4 @@ cd ../../../Backend/
 mvn clean
 mvn install
 cd target
-mvn clean
-mvn install
-cd target
 java -jar *.jar
