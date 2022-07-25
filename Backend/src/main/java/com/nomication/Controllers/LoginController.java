@@ -97,7 +97,7 @@ public class LoginController {
 			if (usernameFromToken != null)
 			{
 				existingUser = bloggerService.FindBlogger(usernameFromToken) ;
-				if (existingUser	 != null)
+				if (existingUser != null)
 				{
 					if (jToken.validateToken(token, existingUser))
 					{
@@ -111,15 +111,7 @@ public class LoginController {
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 	
-	@RequestMapping(value="/logoff", method = RequestMethod.POST,consumes = {MediaType.APPLICATION_JSON_VALUE})	 
-	public ResponseEntity<Object> logoff( @RequestBody HashMap<String, Object> info ,HttpServletRequest httpServletRequest)
-	{ 
-		HashMap<String, Object> result =  new HashMap<String, Object>();
 		
-	
-		
-		return ResponseEntity.status(HttpStatus.OK).body(result);
-	}
 	
 }
 

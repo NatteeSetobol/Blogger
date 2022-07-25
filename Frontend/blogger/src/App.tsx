@@ -13,6 +13,7 @@ function App() {
       <Provider store={store}>
       <BrowserRouter>
       <header>
+        <meta charSet="utf-8" />
         <Navibar></Navibar>
       </header>
         <AppRoutes />

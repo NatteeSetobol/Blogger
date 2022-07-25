@@ -28,7 +28,7 @@ const Navibar:React.FC<any> = () => {
             setShow(true)
         } else {
             setLogin(false)
-            setLogText("Logon");
+            setLogText("Login");
             setShow(false)
         }
     }
@@ -45,8 +45,9 @@ const Navibar:React.FC<any> = () => {
         } else {
             localStorage.removeItem('token')
             setLogin(false)
-            setLogText("Logon");
+            setLogText("Login");
             setShow(false)
+            nav('/')
         } 
     }
 
@@ -54,10 +55,10 @@ const Navibar:React.FC<any> = () => {
         <>
             <Navbar bg="dark" variant="dark">
                 <Container>
-                    <Navbar.Brand href="#home">Blogger</Navbar.Brand>
+                    <Navbar.Brand href="/">Blogger</Navbar.Brand>
                         <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        { show &&  <Nav.Link href="#home">New Blog Entry</Nav.Link> }
+                        <Nav.Link href="/">Home</Nav.Link>
+                        { show &&  <Nav.Link onClick={()=> { nav('create') }} >New Blog Entry</Nav.Link> }
                     </Nav>
                      <Button onClick={ onClick }>{ logText }</Button>
                 </Container>

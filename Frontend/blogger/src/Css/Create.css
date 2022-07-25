@@ -1,0 +1,52 @@
+.createcontainer
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 80px;
+}
+
+.center-content {
+    /* Lets middle column shrink/grow to available width */
+    flex: 1 1 auto;
+    height: 100px;
+}
+
+.left-content,
+.right-content {
+  /* Forces side columns to stay same width */
+  flex: 0 0 30%;
+}
+
+.formContainer
+{
+    display: inline;
+    margin: 0 auto;
+}
+.blog-title-text
+{
+    font-size: 20px;
+}
+.title
+{
+    margin:10px;
+}
+
+.titleInput
+{
+    margin:10px;
+}
+
+.tarea
+{
+    margin:10px;
+}
+
+.outline
+{
+    outline-style: solid;
+    padding: 10px;
+}
+
+
+
