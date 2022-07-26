@@ -15,6 +15,11 @@ public class Blogger {
 	private String username;
 	private String password;
 	
+	public int GetId()
+	{
+		return id;
+	}
+	
 	public String getFirstname() {
 		return firstname;
 	}

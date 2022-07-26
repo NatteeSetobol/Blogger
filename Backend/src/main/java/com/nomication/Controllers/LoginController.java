@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.nomication.Models.Blogger;
 import com.nomication.Services.BloggerService;
 import com.nomication.Util.JwtUtil;
@@ -110,6 +112,8 @@ public class LoginController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
+	
+	
 	
 		
 	

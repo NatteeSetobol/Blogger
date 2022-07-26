@@ -14,6 +14,7 @@ public class Post {
 	private int id;
 	private int authorId;
 	private String title;
+	private String text;
 	private  Timestamp publish;
 	private  Timestamp created;
 	private  Timestamp updated;
@@ -48,5 +49,11 @@ public class Post {
 	}
 	public void setCreated(Timestamp created) {
 		this.created = created;
+	}
+	public String getText() {
+		return text;
+	}
+	public void setText(String text) {
+		this.text = text;
 	}
 }
