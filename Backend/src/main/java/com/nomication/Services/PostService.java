@@ -1,5 +1,7 @@
 package com.nomication.Services;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nomication.Models.Post;
@@ -13,5 +15,11 @@ public class PostService {
 	{
 		postRepo.save(post);
 	}
+	
+	ArrayList<Post> GetAllUserPost(int id)
+	{
+		return postRepo.GetUserPost(id);
+	}
+	
 }
 	

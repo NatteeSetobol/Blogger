@@ -32,7 +32,7 @@ const Navibar:React.FC<any> = () => {
             setShow(false)
         }
     }
-
+    
     window.addEventListener('storage', () => {
         setRefreshed(!refreshed)
         checkToken();
@@ -58,7 +58,7 @@ const Navibar:React.FC<any> = () => {
                     <Navbar.Brand href="/">Blogger</Navbar.Brand>
                         <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
-                        { show &&  <Nav.Link onClick={()=> { nav('create') }} >New Blog Entry</Nav.Link> }
+                        { show &&  <Nav.Link onClick={()=> { nav('/myblogs') }} >My Blog</Nav.Link> }
                     </Nav>
                      <Button onClick={ onClick }>{ logText }</Button>
                 </Container>

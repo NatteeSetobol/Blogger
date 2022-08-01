@@ -3,6 +3,7 @@ package com.nomication.Controllers;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,13 +35,29 @@ public class BloggerController {
 	@Autowired
 	PostRepo postRepo;
 
-	@RequestMapping(value="/blog/{id}", method = RequestMethod.GET )
-	public ResponseEntity<Object> getAllDueCards(@PathVariable("id") int deckId,HttpServletRequest httpServletRequest)
+	@RequestMapping(value="/blogs", method = RequestMethod.POST )
+	public ResponseEntity<Object> getAllDueCards(@RequestBody  HashMap<String, Object> info,HttpServletRequest httpServletRequest)
 	{
 		HashMap<String, Object> result =  new HashMap<String, Object>();
-		result.put("error","no session found!");
-
-		return ResponseEntity.status(HttpStatus.OK).body(result);
+		String token = null;
+		
+		token = info.get("token").toString();
+		Blogger blogger = null;
+		
+		blogger = CheckUserAndToken(token);
+		
+		if (blogger != null)
+		{
+			ArrayList<Post> blogs = null;
+			blogs = postRepo.GetUserPost(blogger.GetId()); 
+			
+			
+			result.put("Success", blogs);
+		} else {
+			result.put("Success", "false");
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body(result);	
 	}
 	
 	@RequestMapping(value="/submit", method = RequestMethod.POST,consumes = {MediaType.APPLICATION_JSON_VALUE})	 
@@ -92,6 +109,7 @@ public class BloggerController {
 				        	timestamp = Timestamp.valueOf(now);
 				        
 				        	post.setCreated(timestamp);
+				        	post.setAuthorId(existingUser.GetId());
 				        	post.setPublish(timestamp);
 				        	post.setUpdated(timestamp);
 				        	post.setTitle(title);
@@ -118,4 +136,31 @@ public class BloggerController {
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 
+	Blogger CheckUserAndToken(String token)
+	{
+		boolean isValid = false;
+		String usernameFromToken  = null;
+		Blogger existingUser = null;
+	
+		try {
+		usernameFromToken = jToken.extractUsername(token);
+		
+		if (usernameFromToken != null)
+		{
+			existingUser = bloggerService.FindBlogger(usernameFromToken);
+		
+			if (existingUser != null)
+			{
+				if (jToken.validateToken(token, existingUser))
+				{
+					isValid = true;
+				}
+			}
+		}
+		} catch (Exception e) {
+			isValid = false;
+		}
+		
+		return existingUser;
+	}
 }

@@ -1,17 +1,16 @@
-import React from 'react';
+import { ToastContainer } from 'react-bootstrap';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
-import Index from './Components/Index';
 import Navibar from './Components/Navibar';
 import { store } from './store';
-
 
 function App() {
   return (
     <div>
       <Provider store={store}>
       <BrowserRouter>
+      <ToastContainer />
       <header>
         <meta charSet="utf-8" />
         <Navibar></Navibar>

@@ -14,7 +14,14 @@ export const BlogApi = createApi({
                 body: input
             })
         }),
+        blogs: builder.mutation ({
+            query: (input) => ({
+                url: `/blogs`,
+                method: `POST`,
+                body: input
+            })
+        }),
     })
 })
 
-export const { useSubmitMutation, } = BlogApi;
+export const { useSubmitMutation, useBlogsMutation } = BlogApi;

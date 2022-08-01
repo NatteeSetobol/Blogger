@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router'
 import Index from './Components/Index'
 import Login from './Components/Login'
 import Create from './Components/Create'
+import Blogs from './Components/Blogs'
 
 const AppRoutes:React.FC<any> = () => {
     return (
@@ -10,6 +11,7 @@ const AppRoutes:React.FC<any> = () => {
             <Route path='/' element={<Index />} />
             <Route path='/login' element={<Login />} />
             <Route path='/create' element={<Create />} />
+            <Route path='/myblogs' element={<Blogs />} />
         </Routes>
     )
 }

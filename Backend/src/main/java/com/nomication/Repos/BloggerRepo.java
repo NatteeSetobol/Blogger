@@ -15,5 +15,5 @@ import com.nomication.Models.Blogger;
 public interface BloggerRepo extends CrudRepository<Blogger, Integer> {
 
 		@Query("from Blogger")
-		ArrayList<Blogger> findUserByUsername();
+		ArrayList<Blogger> findUserByUsername();	
 }
