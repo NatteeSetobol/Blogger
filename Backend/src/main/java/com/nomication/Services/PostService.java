@@ -21,5 +21,10 @@ public class PostService {
 		return postRepo.GetUserPost(id);
 	}
 	
+	ArrayList<Post> GetPostById(int id)
+	{
+		return postRepo.GetPostById(id);
+	}
+	
 }
 	

@@ -19,6 +19,10 @@ public class Post {
 	private  Timestamp created;
 	private  Timestamp updated;
 	
+	public int getId()
+	{
+		return id;
+	}
 	public int getAuthorId() {
 		return authorId;
 	}

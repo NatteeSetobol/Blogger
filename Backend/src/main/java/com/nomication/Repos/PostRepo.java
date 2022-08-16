@@ -15,4 +15,11 @@ import com.nomication.Models.Post;
 public interface PostRepo extends  CrudRepository<Post, Integer> {
 	@Query("from Post where author_id = ?1")
 	ArrayList<Post> GetUserPost(int author_id);
+	
+	@Query("from Post order by created")
+	ArrayList<Post> GetAllPost();
+	
+	@Query("from Post where id = ?1")
+	ArrayList<Post> GetPostById(int id);
 }
+

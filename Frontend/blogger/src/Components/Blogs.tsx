@@ -6,22 +6,27 @@ import '../Css/Blogs.css'
 import { toast } from 'react-toastify'
 import { useBlogsMutation } from '../Services/Blog'
 import { Post } from '../Models/Post'
+import Moment from 'moment';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 const Blogs:React.FC<any> = () =>
 {
-    const nav = useNavigate();
     const [variant, setVariant] = useState("");
     const [hidden, setHidden] = useState(true);
     const [alertMessage, setAlertMessage] = useState('');
     const [ Blogs, { data, error, isLoading, isSuccess, isError } ] = useBlogsMutation(); 
+    const nav = useNavigate();
 
     useEffect(() => {
         if (isSuccess)
         {
-            if (data.Success == "true")
+            if (data.Success == "false")
             {
-            } else {
-            }
+                    localStorage.removeItem('token');
+                    nav('/')
+            } 
+        
         }
     },[isLoading])
 
@@ -30,6 +35,12 @@ const Blogs:React.FC<any> = () =>
             token: localStorage.getItem('token')
         })
     }, [])
+
+    const formatDate = (time:any) => 
+    {
+        Moment.locale('en');
+        return Moment(time).format('MMM d YYYY')
+    }
 
     const setError = () =>
     {
@@ -43,6 +54,12 @@ const Blogs:React.FC<any> = () =>
         toast.success('successfully created!',{position: toast.POSITION.TOP_CENTER});
     })
     
+    const navigateToEditPage = (event:any, id:number) =>
+    {
+        nav('/edit/' + id);
+    }
+
+
     const mapIt = (mapData:[]) => (
 		mapData.map((post:Post) => (
 			<tr>
@@ -52,10 +69,22 @@ const Blogs:React.FC<any> = () =>
 				<td>
 					{post.title}
 				</td>
-                    { post.created.toString() }
+                    <div className="dates">
+                    { formatDate(post.created.toString()) }
+                    </div>
 				<td>
-                    { post.updated.toString() }
+                    <div className="dates">
+                    { formatDate(post.updated.toString()) }
+                    </div>
 				</td>
+                <td>
+                    <span>
+                        <i className="bi bi-file-earmark-binary-fill" onClick={e => navigateToEditPage(e, post.id)}></i>
+                    </span>
+                    <span>
+                        <i className="bi bi-trash"></i>
+                    </span>
+                </td>
 
 			</tr>
 		)
@@ -90,13 +119,14 @@ const Blogs:React.FC<any> = () =>
                             <th>Title</th>
                             <th>Created</th>
                             <th>Last Update</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                     { isError ? (
 										<> Sorry, an Error has occured. </>
 									) : isSuccess ? (
-										<> { mapIt(data.Success) }  </>
+										<> { data.Success != "false" ? mapIt(data.Success): <>Error!</> }  </>
 									) : isLoading ? (
 										<> loading </>
 									): null

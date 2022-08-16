@@ -2,15 +2,13 @@ import React, { useEffect, useState} from 'react'
 import { useNavigate } from 'react-router';
 import { useSubmitMutation } from '../Services/Blog';
 import '../Css/Create.css'
-import { Button, Form } from 'react-bootstrap';
-import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import BlogForm from './BlogForm';
 import Layout from './Layout';
 
 const Create:React.FC<any> = () => 
 {
-   const [ blogtext, setBlogText ] = useState("");
+   const [ blogtext, setBlogText ] = useState() as any;
    const [ title, setTitle] = useState("");
    const [ SubmitBlog, { data, error, isLoading, isSuccess, isError } ] = useSubmitMutation(); 
    const editor = React.useRef(null);
@@ -56,7 +54,7 @@ const Create:React.FC<any> = () =>
 
     const main = () => 
     (
-        <BlogForm titleChange={titleChange} submitBlog={submitBlog} change={change}/>
+        <BlogForm titleChange={titleChange} submitBlog={submitBlog} change={change} contentState={blogtext} type="create"/>
     )
 
     return (
