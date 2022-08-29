@@ -5,6 +5,8 @@ import '../Css/Create.css'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import BlogForm from './BlogForm';
 import Layout from './Layout';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const Create:React.FC<any> = () => 
 {
@@ -22,6 +24,8 @@ const Create:React.FC<any> = () =>
           {
             if (data.Success == "true")
             {
+                toast.success('successfully created!',{position: toast.POSITION.TOP_CENTER});
+
                 window.dispatchEvent(new Event("success_blog_post"));
                 nav("/myblogs")
             } else {
@@ -35,11 +39,17 @@ const Create:React.FC<any> = () =>
 
     const submitBlog = (event:any) => 
     {
-        SubmitBlog({
-            "title": title,
-            "blog": blogtext,
-            "token": localStorage.getItem('token')
-        })
+        if (title.length == 0)
+        {
+            toast.error('Error, Please enter a title!',{position: toast.POSITION.TOP_CENTER});
+            window.dispatchEvent(new Event("success_blog_post"));
+        } else {
+            SubmitBlog({
+                "title": title,
+                "blog": blogtext,
+                "token": localStorage.getItem('token')
+            })
+        }
     }
 
     const titleChange = (data:any) =>

@@ -33,6 +33,14 @@ export const BlogApi = createApi({
                 url: `/post/` + id ,
             })
         }),
+        delete: builder.mutation ({
+            query: (info) => ({
+                url: `/delete/` ,
+                method: `DELETE`,
+                body: info
+            })
+        }),
+
         allBlogs: builder.mutation ({
             query: () => ({
                 url: `/allblogs`,
@@ -41,4 +49,4 @@ export const BlogApi = createApi({
     })
 })
 
-export const { useEditMutation,useBlogMutation, useAllBlogsMutation , useSubmitMutation, useBlogsMutation } = BlogApi;
+export const { useDeleteMutation,useEditMutation,useBlogMutation, useAllBlogsMutation , useSubmitMutation, useBlogsMutation } = BlogApi;

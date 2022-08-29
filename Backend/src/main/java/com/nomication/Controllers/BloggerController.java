@@ -252,6 +252,61 @@ public class BloggerController {
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 
+	
+	@RequestMapping(value="/delete", method = RequestMethod.DELETE)
+	public ResponseEntity<Object> deletePost(@RequestBody HashMap<String, Object> info,HttpServletRequest httpServletRequest)
+	{ 
+		HashMap<String, Object> result =  new HashMap<String, Object>();
+		ArrayList<Post> posts = null;
+		String token = null;
+		String usernameFromToken  = null;
+		Blogger existingUser = null;
+		int pid = 0;
+		boolean status = false;
+
+		try {
+		token = info.get("token").toString();
+		pid = Integer.parseInt( info.get("id").toString());
+
+
+		usernameFromToken = jToken.extractUsername(token);
+	
+		if (usernameFromToken != null)
+		{
+			existingUser = bloggerService.FindBlogger(usernameFromToken);
+		
+			if (existingUser != null)
+			{
+				if (jToken.validateToken(token, existingUser))
+				{
+					posts = postRepo.GetPostById(pid);
+					if (posts.size() > 0)
+					{
+						Post post = posts.get(0);
+						if (existingUser.GetId() == post.getAuthorId())
+						{
+							status = true;
+							postRepo.delete(post);
+							result.put("Success","Post deleted");
+						}
+					}
+				}
+			}
+		}
+		} catch (Exception e)
+		{
+			status = false;
+		}
+		
+		if (status == false)
+		{
+			result.put("Error","Error deleting post!");
+		}
+
+		
+		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+	
 	Blogger CheckUserAndToken(String token)
 	{
 		boolean isValid = false;

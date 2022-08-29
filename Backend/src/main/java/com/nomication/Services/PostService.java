@@ -16,6 +16,11 @@ public class PostService {
 		postRepo.save(post);
 	}
 	
+	void del(Post post)
+	{
+		postRepo.delete(post);
+	}
+	
 	ArrayList<Post> GetAllUserPost(int id)
 	{
 		return postRepo.GetUserPost(id);

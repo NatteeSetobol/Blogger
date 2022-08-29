@@ -1,8 +1,10 @@
 import React, {useState, useEffect}  from 'react'
 import BlogForm from './BlogForm';
 import Layout from './Layout';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useBlogMutation, useEditMutation } from '../Services/Blog';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify'
 
 const EditPost:React.FC<any> = (props) =>
 {
@@ -10,14 +12,30 @@ const EditPost:React.FC<any> = (props) =>
     const [ title, setTitle] = useState("");
     let params = useParams();
     const [ Blog, { data, error, isLoading, isSuccess, isError } ] = useBlogMutation(); 
-    const [ SubmitEditPost, SubData = {data, error, isLoading, isSuccess, isError}] = useEditMutation();
+    const [ SubmitEditPost, subData = {data, error, isLoading, isSuccess, isError}] = useEditMutation();
     const [richTextDescription, setRichTextDescription] = useState() as any;
     const {id} = useParams();
+    const nav = useNavigate();
 
     useEffect(()=>
     {
         Blog(id);
     }, []);
+
+    useEffect(() => 
+    {
+        if (subData.isSuccess)
+        {
+            if (subData.data.Success == "true") 
+            {
+                toast.success('Post successfully changed',{position: toast.POSITION.TOP_CENTER});
+                nav("/myblogs")
+            } else {
+                toast.error('failed updating blog entry.',{position: toast.POSITION.TOP_CENTER});
+            }          
+        } else {
+        }
+    }, [subData.isLoading])
     
     useEffect(()=> 
     {
@@ -72,3 +90,7 @@ const EditPost:React.FC<any> = (props) =>
 }
 
 export default EditPost;
+
+function useNav() {
+    throw new Error('Function not implemented.');
+}

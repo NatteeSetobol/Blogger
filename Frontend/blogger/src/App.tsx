@@ -10,11 +10,11 @@ function App() {
     <div>
       <Provider store={store}>
       <BrowserRouter>
-      <ToastContainer />
       <header>
         <meta charSet="utf-8" />
         <Navibar></Navibar>
       </header>
+      <ToastContainer />
         <AppRoutes />
       </BrowserRouter>
       </Provider>

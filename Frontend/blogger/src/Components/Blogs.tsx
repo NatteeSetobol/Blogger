@@ -3,12 +3,13 @@ import { Alert, Button, Nav, Table } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import Layout from './Layout'
 import '../Css/Blogs.css'
-import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify'
 import { useBlogsMutation } from '../Services/Blog'
 import { Post } from '../Models/Post'
 import Moment from 'moment';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
+import { useDeleteMutation } from '../Services/Blog'
 
 const Blogs:React.FC<any> = () =>
 {
@@ -16,17 +17,29 @@ const Blogs:React.FC<any> = () =>
     const [hidden, setHidden] = useState(true);
     const [alertMessage, setAlertMessage] = useState('');
     const [ Blogs, { data, error, isLoading, isSuccess, isError } ] = useBlogsMutation(); 
+    const [ deletePost, deleteResult = { data, error, isLoading, isSuccess, isError } ] = useDeleteMutation(); 
     const nav = useNavigate();
+
+    useEffect(() => {
+        if (deleteResult.isSuccess)
+        {
+            toast.success('Post successfully deleted',{position: toast.POSITION.TOP_CENTER});
+            window.dispatchEvent(new Event("success_blog_post"));
+
+            Blogs({
+                token: localStorage.getItem('token')
+            })
+        }
+    },[deleteResult.isLoading])
 
     useEffect(() => {
         if (isSuccess)
         {
             if (data.Success == "false")
             {
-                    localStorage.removeItem('token');
-                    nav('/')
+                localStorage.removeItem('token');
+                nav('/')
             } 
-        
         }
     },[isLoading])
 
@@ -51,7 +64,6 @@ const Blogs:React.FC<any> = () =>
 
     window.addEventListener('success_blog_post', () => {
         setError();
-        toast.success('successfully created!',{position: toast.POSITION.TOP_CENTER});
     })
     
     const navigateToEditPage = (event:any, id:number) =>
@@ -59,6 +71,11 @@ const Blogs:React.FC<any> = () =>
         nav('/edit/' + id);
     }
 
+
+    const DeletePost = (event:any, id:number) =>
+    {
+        deletePost({ id: id, token: localStorage.getItem("token")  })
+    }
 
     const mapIt = (mapData:[]) => (
 		mapData.map((post:Post) => (
@@ -82,7 +99,7 @@ const Blogs:React.FC<any> = () =>
                         <i className="bi bi-file-earmark-binary-fill" onClick={e => navigateToEditPage(e, post.id)}></i>
                     </span>
                     <span>
-                        <i className="bi bi-trash"></i>
+                        <i className="bi bi-trash" onClick={e => DeletePost(e, post.id)}></i>
                     </span>
                 </td>
 
@@ -95,7 +112,9 @@ const Blogs:React.FC<any> = () =>
     const blog = () =>
     (
         <>
+            <ToastContainer />
             <div>
+
                 <Button variant="primary" onClick={()=> { nav('/create') }}>Create</Button>
             </div>
             <Alert key={variant} variant={variant} hidden={hidden}>
