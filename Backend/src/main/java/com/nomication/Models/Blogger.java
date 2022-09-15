@@ -1,9 +1,12 @@
 package com.nomication.Models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Blogger {
@@ -14,6 +17,9 @@ public class Blogger {
 	private String lastname;
 	private String username;
 	private String password;
+	
+	@OneToMany(mappedBy="blogger")
+	private List<Post> Post;
 	
 	public int GetId()
 	{

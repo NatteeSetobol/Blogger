@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react'
+import React, { useEffect, useState, useMemo} from 'react'
 import { useNavigate } from 'react-router';
 import { useSubmitMutation } from '../Services/Blog';
 import '../Css/Create.css'
@@ -6,16 +6,18 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import BlogForm from './BlogForm';
 import Layout from './Layout';
 import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
+import { toast,ToastContainer } from 'react-toastify';
 
 const Create:React.FC<any> = () => 
 {
+   const [ hasRan, setHasRan ] = useState(false);
    const [ blogtext, setBlogText ] = useState() as any;
    const [ title, setTitle] = useState("");
    const [ SubmitBlog, { data, error, isLoading, isSuccess, isError } ] = useSubmitMutation(); 
    const editor = React.useRef(null);
 
    const nav = useNavigate();
+   
 
     useEffect(() => {
       if (isSuccess)
@@ -24,10 +26,19 @@ const Create:React.FC<any> = () =>
           {
             if (data.Success == "true")
             {
-                toast.success('successfully created!',{position: toast.POSITION.TOP_CENTER});
-
-                window.dispatchEvent(new Event("success_blog_post"));
-                nav("/myblogs")
+                //toast.success('successfully created!',{position: toast.POSITION.TOP_CENTER});
+                if (hasRan == false)
+                {
+                    
+                    let timeout = setTimeout(() => {
+                        window.dispatchEvent(new Event("success_blog_post"));
+                        clearTimeout(timeout);
+                    }, 500);
+                    
+                    nav("/myblogs")
+                    console.log("ran windows dispatch");
+                    setHasRan(true);
+                }
             } else {
 
             }
@@ -42,7 +53,7 @@ const Create:React.FC<any> = () =>
         if (title.length == 0)
         {
             toast.error('Error, Please enter a title!',{position: toast.POSITION.TOP_CENTER});
-            window.dispatchEvent(new Event("success_blog_post"));
+            //window.dispatchEvent(new Event("success_blog_post"));
         } else {
             SubmitBlog({
                 "title": title,
@@ -68,8 +79,11 @@ const Create:React.FC<any> = () =>
     )
 
     return (
+        <>
+        <ToastContainer />
         <Layout content={main}>
         </Layout>
+        </>
     )
 }
 

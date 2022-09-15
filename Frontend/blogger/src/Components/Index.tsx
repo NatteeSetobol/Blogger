@@ -4,7 +4,6 @@ import { useAllBlogsMutation } from '../Services/Blog';
 import { Post } from '../Models/Post';
 import Moment from 'moment';
 import '../Css/Index.css'
-import { getSystemErrorName } from 'util';
 
 const Index:React.FC<any> = () => {
     const [ AllBlogs, { data, isLoading, isSuccess, isError } ] = useAllBlogsMutation(); 
@@ -12,13 +11,6 @@ const Index:React.FC<any> = () => {
     useEffect(()=> {
         AllBlogs(null);
     }, [])
-
-    useEffect(()=> {
-        if (isSuccess)
-        {
-            //console.log(JSON.parse(data.Success[0].text))           
-        }
-    },[isLoading])
 
     const formatDate = (time:any) => 
     {
@@ -30,6 +22,8 @@ const Index:React.FC<any> = () => {
     {
         let startPos = 0
         let newBlockMap:any = [];
+
+        //TODO(): Fix overlaping Text
 
         dataArray.forEach((ranges:any, rangePos:number)=> {
             let normalTextRange;
@@ -64,6 +58,8 @@ const Index:React.FC<any> = () => {
             } else {
                 if (ranges.offset < startPos)
                 {
+                    let textRange = null;
+
                     newBlockMap.forEach((newObj: any, i: number) => {
                         if (ranges.offset > newObj.ranges.offset && ranges.offset < newObj.ranges.offset+newObj.ranges.length)
                         {
@@ -95,7 +91,6 @@ const Index:React.FC<any> = () => {
                             newBlockMap.push(block2)
                         }
                     })
-                    let textRange = null;
 
                     textRange = text.substring(ranges.offset, ranges.offset+ranges.length)
                 } else {
@@ -128,26 +123,32 @@ const Index:React.FC<any> = () => {
         return newBlockMap
     }
 
+    const isNotArrayEmpy:any = (array:any) =>
+    {
+        if (array.length != 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     const parseText:any = (data:any) => 
     {
         let jsonData = JSON.parse(data);
         let blockmap:any = jsonData.blocks;
-
-        let startPos = 0;
         let result:any = {}
-
-       // console.log(jsonData);
         
         result.line = {};
         result.line.lines = []
 
         blockmap.forEach( (obj:any) => 
         {
-
             let newBlockMap:any = [];
             let brokeDown = false;
-
-            if (obj.inlineStyleRanges.length != 0 || obj.entityRanges.length != 0)
+            
+            if (isNotArrayEmpy(obj.inlineStyleRanges) || isNotArrayEmpy(obj.entityRanges))
+            //if (obj.inlineStyleRanges.length != 0 || obj.entityRanges.length != 0)
             {
                 let newRanges = [];
 
@@ -165,18 +166,17 @@ const Index:React.FC<any> = () => {
                     return 0;
                 })
                 
-                //console.log(newRanges)
                 newBlockMap = breakdownText(newRanges, obj.text, jsonData.entityMap);
-
+                // NOTES():
+                // Loops though newBlock, to see if an object has a key property if it does
+                // then create a new property can keyData and the data from the entity map 
                 newBlockMap.forEach( (textObj:any, i: number) =>
                 {
                     if (textObj.key != undefined)
                     {
-                        newBlockMap[i].keyData = obj.entityMap[0];
+                        newBlockMap[i].keyData = obj.entityMap[textObj.key];
                     }
                 })
-
-                console.log(newBlockMap)
 
                 brokeDown = true;
             } 
@@ -195,8 +195,6 @@ const Index:React.FC<any> = () => {
 
             result.line.lines.push(dataBlock)
         })
-
-       // result = {  newBlockMap }
 
         return  result;
     }
@@ -327,7 +325,6 @@ const Index:React.FC<any> = () => {
                             { mapEntryText(entry.texts) }
                         </blockquote>
                     ):
-
                     (
                         <div>
                             { mapEntryText(entry.texts) }
@@ -338,17 +335,21 @@ const Index:React.FC<any> = () => {
         ))
     )
 
-    
-
-    const mapIt = (mapData:[]) => (
-		mapData.map((post:Post) => (
+    const mapBlogPosts = (mapData:[]) => (
+		mapData.map((post:any) => (
             <div>
-                <div className="Blog_Title">
-                    <h3> { post.title } </h3>
-                </div>
                 <div className="Blog_Date">
-                    <i> Created on { formatDate(post.created)} </i>
+                    <span className="userAvatar">
+                        <img src="user-default.svg" alt="image"/>
+                    </span>
+                    <span className="userInfo">
+                        {post.blogger.firstname} {post.blogger.lastname} { formatDate(post.created)}
+                    </span>
                 </div>
+                <div className="Blog_Title">
+                    <h2> { post.title } </h2>
+                </div>
+
                 <div className="Blog_Text">
                     {
                         mapTextLine(parseText(post.text))
@@ -367,7 +368,7 @@ const Index:React.FC<any> = () => {
                 (
                     <> Sorry, an Error has occured. </>
                 ) : isSuccess ? (
-                    <> { mapIt(data.Success) }  </>
+                    <> { mapBlogPosts(data.Success) }  </>
                 ) : isLoading ? (
                     <> loading </>
                 ): null

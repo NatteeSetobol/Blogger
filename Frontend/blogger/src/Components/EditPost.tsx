@@ -33,8 +33,7 @@ const EditPost:React.FC<any> = (props) =>
             } else {
                 toast.error('failed updating blog entry.',{position: toast.POSITION.TOP_CENTER});
             }          
-        } else {
-        }
+        } 
     }, [subData.isLoading])
     
     useEffect(()=> 

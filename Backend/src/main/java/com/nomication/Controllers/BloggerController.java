@@ -45,6 +45,15 @@ public class BloggerController {
 		
 		blogs = postRepo.GetAllPost();
 		
+		for (int i=0; i < blogs.size();i++)
+		{
+			Post post = null;
+			post = (Post) blogs.get(i);
+			// NOTES(): we don't want to leak the user's password hash!!
+			post.blogger.setPassword("");
+		}
+				
+		
 		result.put("Success", blogs);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -65,7 +74,6 @@ public class BloggerController {
 		{
 			ArrayList<Post> blogs = null;
 			blogs = postRepo.GetUserPost(blogger.GetId()); 
-			
 			
 			result.put("Success", blogs);
 		} else {

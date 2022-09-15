@@ -1,0 +1,12 @@
+.RichEditor
+{
+    max-width: 660px;
+    max-height:450px;
+    min-Height:450px;
+    overflow-y: auto;
+}
+
+.pad
+{
+    margin-top: 30px;
+}
