@@ -19,4 +19,4 @@ instructions to here https://docs.spring.io/spring-boot/docs/current/reference/h
 
 You can configure the database in application properties. I currently have the database in a schema called blog, which is required for you
 create. You can create a schema with DBeaver or manually. 
-After everything is installed you can go in the folder and run build.sh.
+After everything is installed you can go in the folder and run build.sh. This will build the frontend Reactjs and the backend Java and then run the site.
