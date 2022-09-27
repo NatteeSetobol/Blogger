@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router'
 import Layout from './Layout'
 import '../Css/Blogs.css'
 import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify'
 import { useBlogsMutation } from '../Services/Blog'
 import { Post } from '../Models/Post'
 import Moment from 'moment';
@@ -21,7 +20,7 @@ const Blogs:React.FC<any> = () =>
     useEffect(() => {
         if (deleteResult.isSuccess)
         {
-            toast.success('Post successfully deleted',{position: toast.POSITION.TOP_CENTER});
+           // toast.success('Post successfully deleted',{position: toast.POSITION.TOP_CENTER});
 
             Blogs({
                 token: localStorage.getItem('token')
@@ -50,7 +49,7 @@ const Blogs:React.FC<any> = () =>
         if (variant == false)
         {
             window.addEventListener('success_blog_post', () => {
-            toast.success('successfully created!',{position: toast.POSITION.TOP_CENTER});
+            //toast.success('successfully created!',{position: toast.POSITION.TOP_CENTER});
 
             console.log("listener activated");
             setVariant(true);
@@ -113,7 +112,6 @@ const Blogs:React.FC<any> = () =>
     const blog = () =>
     (
         <>
-            <ToastContainer />
             <div>
                 <Button variant="primary" onClick={()=> { nav('/create') }}>Create</Button>
             </div>

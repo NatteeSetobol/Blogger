@@ -1,4 +1,4 @@
-import { ToastContainer } from 'react-bootstrap';
+import React from 'react'
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
@@ -14,7 +14,6 @@ function App() {
         <meta charSet="utf-8" />
         <Navibar></Navibar>
       </header>
-      <ToastContainer />
         <AppRoutes />
       </BrowserRouter>
       </Provider>

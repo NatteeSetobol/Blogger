@@ -1,7 +1,7 @@
 import React, { useEffect  } from 'react'
 import Layout from './Layout';
 import { useAllBlogsMutation } from '../Services/Blog';
-import { Post } from '../Models/Post';
+//import { Post } from '../Models/Post';
 import Moment from 'moment';
 import '../Css/Index.css'
 
