@@ -58,5 +58,8 @@
   },
   "devDependencies": {
     "@types/react-draft-wysiwyg": "^1.13.4"
-  }
+  },
+  "overrides": {
+      "node-fetch": "^2.6.7"
+}
 }
