@@ -5,8 +5,8 @@ import '../Css/Create.css'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import BlogForm from './BlogForm';
 import Layout from './Layout';
-import 'react-toastify/dist/ReactToastify.css';
-import { toast,ToastContainer } from 'react-toastify';
+//import 'react-toastify/dist/ReactToastify.css';
+//import { toast,ToastContainer } from 'react-toastify';
 
 const Create:React.FC<any> = () => 
 {
@@ -52,7 +52,7 @@ const Create:React.FC<any> = () =>
     {
         if (title.length == 0)
         {
-            toast.error('Error, Please enter a title!',{position: toast.POSITION.TOP_CENTER});
+           // toast.error('Error, Please enter a title!',{position: toast.POSITION.TOP_CENTER});
             //window.dispatchEvent(new Event("success_blog_post"));
         } else {
             SubmitBlog({
@@ -80,7 +80,6 @@ const Create:React.FC<any> = () =>
 
     return (
         <>
-        <ToastContainer />
         <Layout content={main}>
         </Layout>
         </>

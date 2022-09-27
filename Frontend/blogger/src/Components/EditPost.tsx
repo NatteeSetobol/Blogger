@@ -3,8 +3,8 @@ import BlogForm from './BlogForm';
 import Layout from './Layout';
 import { useNavigate, useParams } from 'react-router';
 import { useBlogMutation, useEditMutation } from '../Services/Blog';
-import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify'
+//import 'react-toastify/dist/ReactToastify.css';
+//import { toast } from 'react-toastify'
 
 const EditPost:React.FC<any> = (props) =>
 {
@@ -28,10 +28,10 @@ const EditPost:React.FC<any> = (props) =>
         {
             if (subData.data.Success == "true") 
             {
-                toast.success('Post successfully changed',{position: toast.POSITION.TOP_CENTER});
+                ///toast.success('Post successfully changed',{position: toast.POSITION.TOP_CENTER});
                 nav("/myblogs")
             } else {
-                toast.error('failed updating blog entry.',{position: toast.POSITION.TOP_CENTER});
+                //toast.error('failed updating blog entry.',{position: toast.POSITION.TOP_CENTER});
             }          
         } 
     }, [subData.isLoading])
