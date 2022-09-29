@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {  Button, Nav, Table } from 'react-bootstrap'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import Layout from './Layout'
 import '../Css/Blogs.css'
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,12 +10,16 @@ import Moment from 'moment';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useDeleteMutation } from '../Services/Blog'
 
-const Blogs:React.FC<any> = () =>
+const Blogs:React.FC<any> = (props) =>
 {
     const [variant, setVariant] = useState(false);
     const [ Blogs, { data, error, isLoading, isSuccess, isError } ] = useBlogsMutation(); 
     const [ deletePost, deleteResult = { data, error, isLoading, isSuccess, isError } ] = useDeleteMutation(); 
     const nav = useNavigate();
+    const [ errorContainer, setErrorContainer ]  = useState({ display: "none" });
+    const [ hasTriggerMessage, setHasTriggerMessage] = useState(false);
+    const [ messager, setMessager] = useState("");
+    const {msg} = useParams();
 
     useEffect(() => {
         if (deleteResult.isSuccess)
@@ -48,10 +52,9 @@ const Blogs:React.FC<any> = () =>
         })
         if (variant == false)
         {
-            window.addEventListener('success_blog_post', () => {
+            window.addEventListener('error', () => {
             //toast.success('successfully created!',{position: toast.POSITION.TOP_CENTER});
 
-            console.log("listener activated");
             setVariant(true);
         });
        // setVariant((prev) => "testing");
@@ -60,7 +63,23 @@ const Blogs:React.FC<any> = () =>
     }, [])
 
 
-  
+    useEffect(() => {
+    },[setMessager,messager])
+
+    /*
+    window.addEventListener("blog_success", () => {
+        setErrorContainer({ display: "inline" })
+        
+        let timeout = setTimeout(() => {
+            setMessager((prevMessager) => "Blog Created!")
+            //setMessager("hello world!");
+            alert('test')
+            clearTimeout(timeout);
+        }, 10000);
+
+    }, true)
+    */
+
     const formatDate = (time:any) => 
     {
         Moment.locale('en');
@@ -112,6 +131,29 @@ const Blogs:React.FC<any> = () =>
     const blog = () =>
     (
         <>
+                { msg == "blog_success" ? 
+                    (
+                        <div className="message">
+                            Blog created!
+                        </div>
+                    ):
+                    (
+                        <></>
+                    )
+                }
+                {
+                    deleteResult.isSuccess ?
+                    (
+                        <div className="message">
+                            Successfully deleted!
+                        </div>
+
+                    ):
+                    (
+                        <></>
+                    )
+
+                }
             <div>
                 <Button variant="primary" onClick={()=> { nav('/create') }}>Create</Button>
             </div>

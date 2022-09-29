@@ -30,13 +30,12 @@ const Create:React.FC<any> = () =>
                 if (hasRan == false)
                 {
                     
-                    let timeout = setTimeout(() => {
-                        window.dispatchEvent(new Event("success_blog_post"));
-                        clearTimeout(timeout);
-                    }, 500);
+                   // let timeout = setTimeout(() => {
+                    window.dispatchEvent(new Event("blog_success"));
+                     //   clearTimeout(timeout);
+                    //}, 500);
                     
-                    nav("/myblogs")
-                    console.log("ran windows dispatch");
+                    nav("/myblogs/blog_success")
                     setHasRan(true);
                 }
             } else {

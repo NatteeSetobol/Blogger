@@ -9,10 +9,13 @@ import EditPost from './Components/EditPost'
 const AppRoutes:React.FC<any> = () => {
     return (
         <Routes>
-            <Route path='/' element={<Index />} />
+            <Route path='/' element={<Index />} >
+            </Route>
             <Route path='/login' element={<Login />} />
             <Route path='/create' element={<Create />} />
-            <Route path='/myblogs' element={<Blogs />} />
+            <Route path='/myblogs' element={<Blogs />} >
+                <Route path=':msg' element={<Blogs />} />
+            </Route>
             <Route path='/edit/' element={<EditPost />} >
                 <Route path=':id' element={<EditPost />} />
             </Route>
