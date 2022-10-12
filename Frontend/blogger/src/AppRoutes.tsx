@@ -5,6 +5,7 @@ import Login from './Components/Login'
 import Create from './Components/Create'
 import Blogs from './Components/Blogs'
 import EditPost from './Components/EditPost'
+import ViewBlog  from './Components/ViewBlog'
 
 const AppRoutes:React.FC<any> = () => {
     return (
@@ -18,6 +19,9 @@ const AppRoutes:React.FC<any> = () => {
             </Route>
             <Route path='/edit/' element={<EditPost />} >
                 <Route path=':id' element={<EditPost />} />
+            </Route>
+            <Route path='/view/' element={<ViewBlog />} >
+                <Route path=':id' element={<ViewBlog />} />
             </Route>
         </Routes>
     )

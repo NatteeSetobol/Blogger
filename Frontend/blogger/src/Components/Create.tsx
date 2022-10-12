@@ -5,8 +5,6 @@ import '../Css/Create.css'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import BlogForm from './BlogForm';
 import Layout from './Layout';
-//import 'react-toastify/dist/ReactToastify.css';
-//import { toast,ToastContainer } from 'react-toastify';
 
 const Create:React.FC<any> = () => 
 {
@@ -18,7 +16,6 @@ const Create:React.FC<any> = () =>
 
    const nav = useNavigate();
    
-
     useEffect(() => {
       if (isSuccess)
       {
@@ -26,14 +23,9 @@ const Create:React.FC<any> = () =>
           {
             if (data.Success == "true")
             {
-                //toast.success('successfully created!',{position: toast.POSITION.TOP_CENTER});
                 if (hasRan == false)
                 {
-                    
-                   // let timeout = setTimeout(() => {
                     window.dispatchEvent(new Event("blog_success"));
-                     //   clearTimeout(timeout);
-                    //}, 500);
                     
                     nav("/myblogs/blog_success")
                     setHasRan(true);
@@ -51,8 +43,6 @@ const Create:React.FC<any> = () =>
     {
         if (title.length == 0)
         {
-           // toast.error('Error, Please enter a title!',{position: toast.POSITION.TOP_CENTER});
-            //window.dispatchEvent(new Event("success_blog_post"));
         } else {
             SubmitBlog({
                 "title": title,

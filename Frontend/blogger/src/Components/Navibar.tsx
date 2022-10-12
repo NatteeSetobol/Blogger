@@ -65,9 +65,15 @@ const Navibar:React.FC<any> = () => {
                     </Nav>
                     {
                         isLogin === true ? (
+                            <>
+                            <span className="profilePic">
+                             <img src="settings.svg" width="24" height="24"></img>
+                            </span>
+
                             <span className="profilePic">
                              <img src="user-default.svg" width="32" height="32"></img>
                              </span>
+                             </>
                         ) : 
                         (
                             <></>
