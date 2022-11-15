@@ -29,7 +29,7 @@ const EditPost:React.FC<any> = (props) =>
             if (subData.data.Success == "true") 
             {
                 ///toast.success('Post successfully changed',{position: toast.POSITION.TOP_CENTER});
-                nav("/myblogs")
+                nav("/myblogs/blog_edit_success")
             } else {
                 //toast.error('failed updating blog entry.',{position: toast.POSITION.TOP_CENTER});
             }          
@@ -51,10 +51,7 @@ const EditPost:React.FC<any> = (props) =>
         }
     },[isLoading])
     
-    const edit = () =>
-    (
-        <BlogForm titleChange={titleChange} submitBlog={submitBlog} title={title} change={change} contentState={ richTextDescription}  type="edit" />
-    )
+
 
    const submitBlog = (event:any, blogData: any) => 
     {
@@ -82,6 +79,44 @@ const EditPost:React.FC<any> = (props) =>
         setRichTextDescription(adata);
     }
 
+    const edit = () =>
+    (
+        <>
+        {     
+            subData.isSuccess ?
+            (
+                <>
+                {
+                    subData.data?
+                    (
+                        <>
+                        {
+                            subData.data.success ?
+                            (
+                                <></>
+                            ):(
+                                <>
+                                    <div className="errorHandler">
+                                        { subData.data.error }           
+                                    </div>
+                                </>
+                            )
+                        }
+                        </>
+                    ):(
+                        <></>       
+                    )
+                }
+                </>
+            ) : (
+                <></>
+            )
+        }
+
+
+        <BlogForm titleChange={titleChange} submitBlog={submitBlog} title={title} change={change} contentState={ richTextDescription}  type="edit" />
+        </> 
+    )
     return (
         <Layout content={edit}>
         </Layout>

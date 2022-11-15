@@ -45,7 +45,7 @@ const BlogForm:React.FC<any> = ({title, titleChange,change, submitBlog, contentS
             <Form>
                 <Form.Group className="mb-3" controlId="formTitle">
                 <Form.Label className="blog-title-text">Blog Title</Form.Label>
-                <Form.Control type="title" placeholder="Enter blog title"  onChange={titleChange} value={title}  />
+                <Form.Control type="title" placeholder="Enter blog title"  onChange={titleChange} value={title} name="title" />
                 </Form.Group>
                 <Form.Group className="mb-3 outline RichEditor" controlId="formBlogEntry">
                 <Editor
@@ -54,6 +54,7 @@ const BlogForm:React.FC<any> = ({title, titleChange,change, submitBlog, contentS
                     toolbarClassName="toolbar-class"
                     editorClassName="editorStyle"
                     onEditorStateChange={onContentStateChange}
+                    
                 />
                 </Form.Group>
                 <Button variant="primary" type="submit" onClick={submit}>

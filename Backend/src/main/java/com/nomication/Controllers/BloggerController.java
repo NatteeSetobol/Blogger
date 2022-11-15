@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,13 +20,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.nomication.Models.Blogger;
+import com.nomication.Models.DraftJs;
 import com.nomication.Models.Post;
 import com.nomication.Repos.PostRepo;
 import com.nomication.Services.BloggerService;
 import com.nomication.Util.JwtUtil;
+
 
 @RestController
 public class BloggerController {
@@ -42,6 +48,7 @@ public class BloggerController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		ArrayList<Post> blogs = null;
+		String blogText = null;
 		
 		blogs = postRepo.GetAllPost();
 		
@@ -51,6 +58,61 @@ public class BloggerController {
 			post = (Post) blogs.get(i);
 			// NOTES(): we don't want to leak the user's password hash!!
 			post.blogger.setPassword("");
+			
+			blogText = post.getText();
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+			//List<DraftJs> draftJS = objectMapper.readValue(blogText, new TypeReference<List<DraftJs>>)() {};
+			//JSONParser parser = new JSONParser(blogText);
+			
+			try {
+				//JsonNode jsonNode = objectMapper.readTree(blogText);
+				//String a = jsonNode.get("blocks").asText();
+				int j=0;
+				int totalText = 0;
+				DraftJs draftJS = objectMapper.readValue(blogText, DraftJs.class);
+				
+				for (j=0;j<draftJS.blocks.size();j++)
+				{
+					HashMap<String,Object> block = (HashMap<String,Object>) draftJS.blocks.get(j);
+					int textSize = block.get("text").toString().length();
+					if (textSize > 512)
+					{
+						int newTextSize = 512 - totalText;
+						String newText = block.get("text").toString();
+						
+						block.put("text",newText.substring(0, newTextSize) + "...");
+						break;
+					} else
+					if (textSize + totalText >= 512 )
+					{
+						int newTextSize = (totalText+textSize) - 512;
+						String newText = block.get("text").toString();
+						
+						block.put("text",newText.substring(0, newTextSize) + "...");
+						break;
+						
+					} else {
+						totalText += textSize;
+					}
+				}
+				
+				for (int k=j+1; k < draftJS.blocks.size();k++)
+				{
+					draftJS.blocks.remove(k);
+				}
+				
+				String newObjectText=objectMapper.writeValueAsString(draftJS);
+				post.setText(newObjectText);
+				
+				
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			//System.out.print( );
+			
 		}
 				
 		
@@ -130,16 +192,58 @@ public class BloggerController {
 
 					try
 					{
-				        jsonString = objectMapper.writeValueAsString(info.get("text"));
+						String title = null;
+				        DraftJs draftJS=null;
 
+						
+						title =  (String) info.get("title");
+						
+						if (title == null)
+						{
+							result.put("error", "Error, Please enter a title");
+							throw new Exception("Please Enter a blog entry");
+
+						}
+						if (title.length() == 0)
+						{
+							result.put("error", "Error, Please enter a title");
+							throw new Exception("Please Enter a blog entry");	
+						}
+						
+
+						
+				        jsonString = objectMapper.writeValueAsString(info.get("text"));
+				        
+			        	draftJS = objectMapper.readValue(jsonString, DraftJs.class);
+			        	
+			        	if (draftJS.blocks.size() == 0)
+			        	{
+			        		throw new Exception("Please Enter a blog entry");
+			        	}
+			        	if (draftJS.blocks.size() == 1)
+			        	{
+			        		HashMap<String, Object> currentFirstBlock = null;
+			        		String textBlock = null;
+			        		
+			        		
+			        		currentFirstBlock = draftJS.blocks.get(0);
+			        		textBlock = (String) currentFirstBlock.get("text");
+			        		
+			        		if (textBlock.length() == 0)
+			        		{
+								result.put("error", "Please Enter a blog entry");
+				        		throw new Exception("Please Enter a blog entry");
+			        		}
+			        	}
+			        	
+				        
 						ogPost.setText(jsonString);
-						ogPost.setTitle((String) info.get("title"));
+						ogPost.setTitle(title);
 						postRepo.save(ogPost);
 					
 						result.put("Success", "true");
 					} catch (Exception e)
 					{
-						System.out.print("Not the Author " + e.getMessage());
 						result.put("Success", "false");
 					}
 				}
@@ -186,19 +290,46 @@ public class BloggerController {
 				        DateTimeFormatter dtf = null;
 				        LocalDateTime now  = null;
 				        Timestamp timestamp;
-					
-						title = (String) info.get("title");
-						jObject = (Object) info.get("blog");
-						
-				        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+				        DraftJs draftJS=null;
 				        
-				        jsonString = objectMapper.writeValueAsString(jObject);
-				        
+			        	title = (String) info.get("title");
+			        	jObject = (Object) info.get("blog");
 				        try 
 				        {
+
+						
+				        	if (title == null)
+				        	{
+				        		throw new Exception("Please Enter a title!");
+				        	}
+				        	if (title.length()== 0)
+				        	{
+				        		throw new Exception("Please Enter a title!");
+
+				        	}
+				        	if (jObject == null)
+				        	{
+				        		throw new Exception("Please Enter a blog entry");
+				        	}
+				        	
+				        	objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+				        
+				        	jsonString = objectMapper.writeValueAsString(jObject);
+				        
+				        
+
 				        	post = new Post();
 				        	post.setAuthorId(post.getAuthorId());
-				        
+
+				        	
+				        	draftJS = objectMapper.readValue(jsonString, DraftJs.class);
+				        	
+				        	if (draftJS.blocks.size() == 0)
+				        	{
+				        		throw new Exception("Please Enter a blog entry");
+				        	}
+				        	
+				        	
 				        	dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 				        	now = LocalDateTime.now();  
 				   
@@ -217,6 +348,7 @@ public class BloggerController {
 				        } catch (Exception e)
 				        {
 							result.put("Success", "false");
+							result.put("error", "Error, Submitting your blog to the backend.");
 
 				        }		
 					}
@@ -225,7 +357,7 @@ public class BloggerController {
 			}
 		} catch (Exception expection)
 		{
-			result.put("Error", "Unexcepted error");
+			result.put("error", "Unexcepted error");
 
 		}
 		

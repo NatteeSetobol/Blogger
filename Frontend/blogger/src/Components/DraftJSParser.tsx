@@ -137,6 +137,7 @@ const DraftJSParser:React.FC<any> = (params:any) =>
         result.line = {};
         result.line.lines = []
 
+
         blockmap.forEach( (obj:any) => 
         {
             let newBlockMap:any = [];
@@ -355,7 +356,7 @@ const DraftJSParser:React.FC<any> = (params:any) =>
 
     const mapBlogPosts = (mapData:[] ) => (
 		mapData.map((post:any) => (
-            <div>
+            <div className="blogPost">
                 <div className="Blog_Date">
                     <span className="userAvatar">
                         <img src="user-default.svg" alt="image"/>
@@ -378,7 +379,7 @@ const DraftJSParser:React.FC<any> = (params:any) =>
     )
     );
 
-    const mapBlogOnePosts = (post:any) => (
+    const mapBlogOnePost = (post:any) => (
             <div>
                 <div className="Blog_Date">
                     <span className="userAvatar">
@@ -404,7 +405,7 @@ const DraftJSParser:React.FC<any> = (params:any) =>
     return (
         <>
             {
-                params.isOnePost === "true" ?  mapBlogOnePosts(params.data) :  mapBlogPosts(params.data)
+                params.isOnePost === "true" ?  mapBlogOnePost(params.data) :  mapBlogPosts(params.data)
             }
         </>
     )

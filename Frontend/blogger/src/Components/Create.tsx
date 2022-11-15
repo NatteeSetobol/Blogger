@@ -13,6 +13,7 @@ const Create:React.FC<any> = () =>
    const [ title, setTitle] = useState("");
    const [ SubmitBlog, { data, error, isLoading, isSuccess, isError } ] = useSubmitMutation(); 
    const editor = React.useRef(null);
+   const [ errorMessage, SetErrorMessage] = useState();
 
    const nav = useNavigate();
    
@@ -41,15 +42,11 @@ const Create:React.FC<any> = () =>
 
     const submitBlog = (event:any) => 
     {
-        if (title.length == 0)
-        {
-        } else {
-            SubmitBlog({
-                "title": title,
-                "blog": blogtext,
-                "token": localStorage.getItem('token')
-            })
-        }
+        SubmitBlog({
+            "title": title,
+            "blog": blogtext,
+            "token": localStorage.getItem('token')
+        })
     }
 
     const titleChange = (data:any) =>
@@ -64,7 +61,39 @@ const Create:React.FC<any> = () =>
 
     const main = () => 
     (
+        <>
+        {     
+            isSuccess ?
+            (
+                <>
+                {
+                    data?
+                    (
+                        <>
+                        {
+                            data.success ?
+                            (
+                                <></>
+                            ):(
+                                <>
+                                    <div className="errorHandler">
+                                        { data.error }           
+                                    </div>
+                                </>
+                            )
+                        }
+                        </>
+                    ):(
+                        <></>       
+                    )
+                }
+                </>
+            ) : (
+                <></>
+            )
+        }
         <BlogForm titleChange={titleChange} submitBlog={submitBlog} change={change} contentState={blogtext} type="create"/>
+        </>
     )
 
     return (

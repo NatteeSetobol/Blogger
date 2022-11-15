@@ -11,8 +11,12 @@ const Index:React.FC<any> = () => {
         AllBlogs(null);
     }, [])
 
-    useEffect(()=> {
-    }, [isSuccess])
+    useEffect(()=> 
+    {
+        if (isSuccess)
+        {
+        }
+    }, [isLoading])
 
     const main = () =>
     (

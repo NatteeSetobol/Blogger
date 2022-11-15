@@ -61,6 +61,7 @@ const Login:React.FC<any> = () => {
                 type="username"
                 className="form-control mt-1"
                 placeholder="username"
+                name="username"
                 value = {userName}
                 onChange={usernameFieldChange}
               />
@@ -69,6 +70,7 @@ const Login:React.FC<any> = () => {
               <label>Password</label>
               <input
                 type="password"
+                name="password"
                 className="form-control mt-1"
                 placeholder="Enter password"
                 value = {userPassword}
@@ -80,10 +82,12 @@ const Login:React.FC<any> = () => {
                <>
                 { data.token ? 
                   (
-                    <></>
+                    <>
+                    
+                    </>
                   ): 
                   (
-
+                    
                     <div className="error">
                       <Alert key="danger" variant="danger">
                         { data.error }
@@ -95,7 +99,7 @@ const Login:React.FC<any> = () => {
             }
             
             <div className="d-grid gap-2 mt-3">
-              <button type="submit" className="btn btn-primary" onClick={submit}>
+              <button type="submit" className="btn btn-primary" name="submit" onClick={submit}>
                 Submit
               </button>
             </div>

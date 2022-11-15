@@ -113,7 +113,7 @@ const Blogs:React.FC<any> = (props) =>
                     { formatDate(post.updated.toString()) }
                     </div>
 				</td>
-                <td>
+                    <td>
                     <span>
                         <i className="bi bi-file-earmark-binary-fill" onClick={e => navigateToEditPage(e, post.id)}></i>
                     </span>
@@ -141,6 +141,16 @@ const Blogs:React.FC<any> = (props) =>
                         <></>
                     )
                 }
+                { msg == "blog_edit_success" ? 
+                    (
+                        <div className="message">
+                            Blog Edited!
+                        </div>
+                    ):
+                    (
+                        <></>
+                    )
+                }
                 {
                     deleteResult.isSuccess ?
                     (
@@ -155,7 +165,7 @@ const Blogs:React.FC<any> = (props) =>
 
                 }
             <div>
-                <Button variant="primary" onClick={()=> { nav('/create') }}>Create</Button>
+                <Button variant="primary" name="Create" onClick={()=> { nav('/create') }}>Create</Button>
             </div>
             <div>
                <Nav className="justify-content-center"  activeKey="published">
