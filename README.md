@@ -16,7 +16,4 @@ instructions to here https://docs.spring.io/spring-boot/docs/current/reference/h
 
 3. Install PostGres
 
-
-You can configure the database in application properties. I currently have the database in a schema called blog, which is required for you
-create. You can create a schema with DBeaver or manually. 
-After everything is installed you can go in the folder and run build.sh. This will build the frontend Reactjs and the backend Java and then run the site.
+You can configure the database in the application properties. Currently, the database is set up in a schema called 'blog', which is required for creating the application. You can create the schema using DBeaver or manually. Once everything is installed, navigate to the folder and run 'build.sh' to build the frontend ReactJS and backend Java components and launch the site.
